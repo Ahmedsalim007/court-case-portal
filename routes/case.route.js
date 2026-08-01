@@ -5,7 +5,7 @@ import express from 'express';
 
 const router = express.Router();
 
-router.post('/CreateCase', createCase);
+router.post('/createCase', createCase);
 router.get('/getCases', paginate,getAllCases);
 router.get('/getCase/:caseNum', getCaseByCaseNum);
 router.put('/updateCase/:caseNum',UpdateCase)

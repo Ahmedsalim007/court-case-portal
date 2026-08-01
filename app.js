@@ -4,15 +4,14 @@ import dotenv from 'dotenv';
 import caseApi from './routes/case.route.js';
 dotenv.config();
 import { dbConnection  } from './config/dbConnection.js';
+import { errorHandler } from './middlewares/errorHandler.middleware.js';
 
 const app = express();
 app.use(express.json())
 app.use('/api/CasePortal', caseApi)
+app.use(errorHandler);
 
 
-app.get('/', (req, res)=>{
-    res.send('The Case Portal is Working')
-})
 
 const PORT = process.env.PORT||5000;
   await dbConnection();

@@ -7,7 +7,7 @@ const validTransitions = {
   Closed: [],
 };
 
-export const getAllCases = async (req, res) => {
+export const getAllCases = async (req, res, next) => {
   try {
     const { pageNum, limitNum, skip } = req.pagination;
     const cases = await Case.find({}).skip(skip).limit(limitNum);
@@ -32,8 +32,9 @@ export const getAllCases = async (req, res) => {
     });
   }
 };
-export const createCase = async (req, res) => {
-  const { caseNum, caseParties, caseHearingDate, caseAssignedJudge, status } =
+// does the status created or given for each case?
+export const createCase = async (req, res, next) => {
+  const { caseNum, caseParties, caseHearingDate, caseAssignedJudge,  } =
     req.body;
 
   try {
@@ -50,30 +51,12 @@ export const createCase = async (req, res) => {
       message: 'Case Created Successfully',
     });
   } catch (err) {
-    if (err.name === 'ValidationError') {
-      return res.status(400).json({
-        success: false,
-        message: 'Failed To Create Case ',
-        error: err.message,
-      });
-    }
-    if (err.code === 11000) {
-      return res.status(409).json({
-        success: false,
-        message: 'Case number already exists',
-        error: err.message,
-      });
-    }
-
-    return res.status(500).json({
-      success: false,
-      message: 'Something went wrong on the server',
-      error: err.message,
-    });
+    err.context = 'Case Creation falied';
+    next(err);
   }
 };
 
-export const getCaseByCaseNum = async (req, res) => {
+export const getCaseByCaseNum = async (req, res, next) => {
   const { caseNum } = req.params;
   try {
     const foundCase = await Case.findOne({ caseNum });
@@ -91,15 +74,11 @@ export const getCaseByCaseNum = async (req, res) => {
       message: 'Case Not found',
     });
   } catch (err) {
-    return res.status(500).json({
-      sucess: false,
-      message: 'Something went wrong on the server',
-      error: err.message,
-    });
+    next(err);
   }
 };
 
-export const UpdateCase = async (req, res) => {
+export const UpdateCase = async (req, res , next) => {
   const { caseNum } = req.params;
   const { caseParties, caseHearingDate, caseAssignedJudge, status } = req.body;
 
@@ -141,30 +120,12 @@ export const UpdateCase = async (req, res) => {
       message: 'Case Updated Successfully',
     });
   } catch (err) {
-    if (err.name === 'ValidationError') {
-      return res.status(400).json({
-        success: false,
-        message: 'Failed To Update Case ',
-        error: err.message,
-      });
-    }
-    if (err.code === 11000) {
-      return res.status(409).json({
-        success: false,
-        message: 'Case number already exists',
-        error: err.message,
-      });
-    }
-
-    return res.status(500).json({
-      sucess: false,
-      message: 'Something went wrong on the server',
-      error: err.message,
-    });
+   err.context = 'Failed to Update Case';
+  next(err);
   }
 };
 
-export const deleteCase = async (req, res) => {
+export const deleteCase = async (req, res, next) => {
   const { caseNum } = req.params;
 
   try {
@@ -181,10 +142,6 @@ export const deleteCase = async (req, res) => {
       message: 'Case deleted successfully',
     });
   } catch (err) {
-    return res.status(500).json({
-      sucess: false,
-      message: 'Something went wrong on the server',
-      error: err.message,
-    });
+    next(err)
   }
 };
