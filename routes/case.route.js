@@ -1,4 +1,5 @@
 import { createCase, deleteCase, getAllCases, getCaseByCaseNum, UpdateCase } from '../controllers/case.controller.js';
+import { filterCases } from '../middlewares/filterCases.middleware.js';
 import { paginate } from '../middlewares/paginate.middleware.js';
 import express from 'express';
 
@@ -6,7 +7,7 @@ import express from 'express';
 const router = express.Router();
 
 router.post('/createCase', createCase);
-router.get('/getCases', paginate,getAllCases);
+router.get('/getCases',filterCases,paginate,getAllCases);
 router.get('/getCase/:caseNum', getCaseByCaseNum);
 router.put('/updateCase/:caseNum',UpdateCase)
 router.delete('/deleteCase/:caseNum', deleteCase)

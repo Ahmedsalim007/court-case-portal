@@ -10,8 +10,9 @@ const validTransitions = {
 export const getAllCases = async (req, res, next) => {
   try {
     const { pageNum, limitNum, skip } = req.pagination;
-    const cases = await Case.find({}).skip(skip).limit(limitNum);
-    const total = await Case.countDocuments({});
+    const filter= req.filter;
+    const cases = await Case.find(filter).skip(skip).limit(limitNum);
+    const total = await Case.countDocuments(filter);
     const totalPages = Math.ceil(total / limitNum);
     return res.status(200).json({
       success: true,
@@ -25,17 +26,12 @@ export const getAllCases = async (req, res, next) => {
       message: 'Cases fetched successfully',
     });
   } catch (err) {
-    return res.status(500).json({
-      sucess: false,
-      message: 'Something went wrong on the server',
-      error: err.message,
-    });
+    next(err);
   }
 };
-// does the status created or given for each case?
+
 export const createCase = async (req, res, next) => {
-  const { caseNum, caseParties, caseHearingDate, caseAssignedJudge,  } =
-    req.body;
+  const { caseNum, caseParties, caseHearingDate, caseAssignedJudge }=req.body;
 
   try {
     const newCase = new Case({
