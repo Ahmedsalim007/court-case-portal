@@ -19,6 +19,10 @@ const caseSchema = new mongoose.Schema(
             type: String,
             required: true,
             trim: true,
+            match: [
+              /^[A-Za-z\s.\-']+$/,
+              'Party name must contain only letters',
+            ],
           },
           role: {
             type: String,
@@ -27,10 +31,6 @@ const caseSchema = new mongoose.Schema(
               values: ['Plaintiff', 'Defendant', 'Witness'],
               message: '{VALUE} is not a valid role',
             },
-            match: [
-              /^[A-Za-z\s.\-']+$/,
-              'Party name must contain only letters',
-            ],
           },
         },
       ],
@@ -53,15 +53,21 @@ const caseSchema = new mongoose.Schema(
       trim: true,
       match: [/^[A-Za-z\s.\-']+$/, 'Judge name must contain only letters'],
     },
-
     status: {
       type: String,
       enum: {
         values: ['Registered', 'In Hearing', 'Judgment', 'Closed'],
         message: '{VALUE} is not a valid status',
       },
-
       default: 'Registered',
+    },
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+    },
+    updatedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
     },
   },
   {

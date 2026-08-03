@@ -1,7 +1,7 @@
 
 import express from 'express';
 import dotenv from 'dotenv';
-import caseApi from './routes/case.route.js';
+import caseApi from './routes/index.route.js';
 dotenv.config();
 import { dbConnection  } from './config/dbConnection.js';
 import { errorHandler } from './middlewares/errorHandler.middleware.js';

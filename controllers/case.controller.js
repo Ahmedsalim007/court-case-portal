@@ -10,14 +10,15 @@ const validTransitions = {
 export const getAllCases = async (req, res, next) => {
   try {
     const { pageNum, limitNum, skip } = req.pagination;
-    const filter= req.filter;
+    const filter = req.filter;
+
     const cases = await Case.find(filter).skip(skip).limit(limitNum);
     const total = await Case.countDocuments(filter);
     const totalPages = Math.ceil(total / limitNum);
     return res.status(200).json({
       success: true,
       count: cases.length,
-      totalCases:total,
+      totalCases: total,
       page: pageNum,
       totalPages,
       hasNextPage: pageNum < totalPages,
@@ -31,7 +32,7 @@ export const getAllCases = async (req, res, next) => {
 };
 
 export const createCase = async (req, res, next) => {
-  const { caseNum, caseParties, caseHearingDate, caseAssignedJudge }=req.body;
+  const { caseNum, caseParties, caseHearingDate, caseAssignedJudge } = req.body;
 
   try {
     const newCase = new Case({
@@ -39,6 +40,8 @@ export const createCase = async (req, res, next) => {
       parties: caseParties,
       hearingDate: caseHearingDate,
       assignedJudge: caseAssignedJudge,
+      createdBy: req.user.id,
+      updatedBy: req.user.id,
     });
     await newCase.save();
     return res.status(201).json({
@@ -74,7 +77,7 @@ export const getCaseByCaseNum = async (req, res, next) => {
   }
 };
 
-export const UpdateCase = async (req, res , next) => {
+export const UpdateCase = async (req, res, next) => {
   const { caseNum } = req.params;
   const { caseParties, caseHearingDate, caseAssignedJudge, status } = req.body;
 
@@ -84,6 +87,17 @@ export const UpdateCase = async (req, res , next) => {
       return res.status(404).json({
         success: false,
         message: 'Case not found',
+      });
+    }
+    if (
+      status === undefined &&
+      caseParties === undefined &&
+      caseHearingDate === undefined &&
+      caseAssignedJudge === undefined
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: 'No fields provided to update',
       });
     }
 
@@ -109,6 +123,7 @@ export const UpdateCase = async (req, res , next) => {
     if (caseAssignedJudge !== undefined)
       targetCase.assignedJudge = caseAssignedJudge;
 
+    targetCase.updatedBy = req.user.id;
     await targetCase.save();
     return res.status(200).json({
       success: true,
@@ -116,8 +131,8 @@ export const UpdateCase = async (req, res , next) => {
       message: 'Case Updated Successfully',
     });
   } catch (err) {
-   err.context = 'Failed to Update Case';
-  next(err);
+    err.context = 'Failed to Update Case';
+    next(err);
   }
 };
 
@@ -138,6 +153,6 @@ export const deleteCase = async (req, res, next) => {
       message: 'Case deleted successfully',
     });
   } catch (err) {
-    next(err)
+    next(err);
   }
 };
