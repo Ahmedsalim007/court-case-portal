@@ -2,7 +2,15 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 
 const userSchema = new mongoose.Schema(
+
   {
+    fullName:{
+      type: String, 
+      required:true,
+      trim:true,
+      match: [/^[A-Za-z\s.\-']+$/, 'Full name must contain only letters'],
+
+    },
     employeeId: {
       type: String,
       required: true,

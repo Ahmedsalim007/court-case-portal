@@ -12,13 +12,17 @@ export const getAllCases = async (req, res, next) => {
     const { pageNum, limitNum, skip } = req.pagination;
     const filter = req.filter;
 
-    const cases = await Case.find(filter).skip(skip).limit(limitNum);
+    const cases = await Case.find(filter)
+      .populate('createdBy', 'fullName employeeId')
+      .populate('updatedBy', 'fullName employeeId')
+      .skip(skip)
+      .limit(limitNum);
     const total = await Case.countDocuments(filter);
     const totalPages = Math.ceil(total / limitNum);
     return res.status(200).json({
       success: true,
       count: cases.length,
-      totalCases: total,
+      total,
       page: pageNum,
       totalPages,
       hasNextPage: pageNum < totalPages,
@@ -58,7 +62,9 @@ export const createCase = async (req, res, next) => {
 export const getCaseByCaseNum = async (req, res, next) => {
   const { caseNum } = req.params;
   try {
-    const foundCase = await Case.findOne({ caseNum });
+    const foundCase = await Case.findOne({ caseNum })
+      .populate('createdBy', 'fullName employeeId')
+      .populate('updatedBy', 'fullName employeeId');
 
     if (foundCase) {
       return res.status(200).send({

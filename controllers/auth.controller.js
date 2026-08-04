@@ -3,13 +3,14 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 
 export const register = async (req, res, next) => {
-  const { employeeId, password } = req.body;
+  const { employeeId, password, fullName } = req.body;
 
-  if (!employeeId || !password) {
+  if (!employeeId || !password || !fullName) {
     return res.status(400).json({
       success: false,
-      message: 'Employee ID and password are required',
+      message: 'Employee ID, password and FullName are required',
     });
+  }
 
     if (typeof employeeId !== 'string' || typeof password !== 'string') {
       return res.status(400).json({
@@ -17,7 +18,7 @@ export const register = async (req, res, next) => {
         message: 'Invalid request',
       });
     }
-  }
+  
   try {
     const existingUser = await User.findOne({ employeeId });
 
@@ -27,11 +28,11 @@ export const register = async (req, res, next) => {
         message: 'Id is already taken',
       });
     }
-    const newUser = new User({ employeeId, password });
+    const newUser = new User({ employeeId, password, fullName });
     await newUser.save();
 
     const token = jwt.sign(
-      { id: newUser._id, employeeId: newUser.employeeId, role: newUser.role }, // paylood (never put password)
+      { id: newUser._id, fullName: newUser.fullName, employeeId: newUser.employeeId, role: newUser.role }, // paylood (never put password)
       process.env.JWT_SECERT,
       { expiresIn: '1d' }
     );
@@ -80,7 +81,7 @@ export const login = async (req, res, next) => {
     }
 
     const token = jwt.sign(
-      { id: user._id, employeeId: user.employeeId, role: user.role },
+      { id: user._id,fullName: user.fullName, employeeId: user.employeeId, role: user.role },
       process.env.JWT_SECERT,
       { expiresIn: '1d' }
     );
