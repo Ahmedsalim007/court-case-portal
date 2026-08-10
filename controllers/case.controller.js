@@ -1,4 +1,5 @@
 import { Case } from '../models/case.js';
+import { generateCaseNum } from '../utils/generateCaseNum.js';
 
 const validTransitions = {
   Registered: ['In Hearing'],
@@ -36,9 +37,11 @@ export const getAllCases = async (req, res, next) => {
 };
 
 export const createCase = async (req, res, next) => {
-  const { caseNum, caseParties, caseHearingDate, caseAssignedJudge } = req.body;
+  const {caseParties, caseHearingDate, caseAssignedJudge } = req.body;
 
   try {
+    const caseNum =await generateCaseNum();
+  
     const newCase = new Case({
       caseNum,
       parties: caseParties,
