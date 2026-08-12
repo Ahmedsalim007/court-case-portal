@@ -37,11 +37,11 @@ export const getAllCases = async (req, res, next) => {
 };
 
 export const createCase = async (req, res, next) => {
-  const {caseParties, caseHearingDate, caseAssignedJudge } = req.body;
+  const { caseParties, caseHearingDate, caseAssignedJudge } = req.body;
 
   try {
-    const caseNum =await generateCaseNum();
-  
+    const caseNum = await generateCaseNum();
+
     const newCase = new Case({
       caseNum,
       parties: caseParties,
@@ -160,6 +160,30 @@ export const deleteCase = async (req, res, next) => {
       success: true,
       data: deletedCase,
       message: 'Case deleted successfully',
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const getCaseStats = async (req, res, next) => {
+  try {
+    const statusGroups = await Case.aggregate([
+      {
+        $group: { _id: '$status', count: { $sum: 1 } },
+      },
+    ]);
+    const counts = { Registered: 0, 'In Hearing': 0, Judgment: 0, Closed: 0 };
+     statusGroups.forEach((s) => {
+      counts[s._id] = s.count;
+    });
+
+    const total = Object.values(counts).reduce((sum, c) => sum + c, 0);
+
+    return res.status(200).json({
+      success: true,
+      data: { counts, total },
+      message: 'Stats fetched successfully',
     });
   } catch (err) {
     next(err);

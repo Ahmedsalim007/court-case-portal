@@ -2,6 +2,7 @@ import { createCase, deleteCase, getAllCases, getCaseByCaseNum, UpdateCase } fro
 import { filterCases } from '../middlewares/filterCases.middleware.js';
 import { paginate } from '../middlewares/paginate.middleware.js';
 import { requireAuth } from '../middlewares/auth.middleware.js';
+import { getCaseStats } from '../controllers/case.controller.js';
 import express from 'express';
 
 
@@ -12,5 +13,5 @@ router.get('/getCases',requireAuth, filterCases, paginate, getAllCases);
 router.get('/getCase/:caseNum',requireAuth, getCaseByCaseNum);
 router.put('/updateCase/:caseNum',requireAuth, UpdateCase)
 router.delete('/deleteCase/:caseNum', requireAuth ,deleteCase)
-
+router.get('/stats', requireAuth, getCaseStats)
 export default router;
