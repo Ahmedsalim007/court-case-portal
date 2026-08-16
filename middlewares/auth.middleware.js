@@ -13,7 +13,7 @@ export const requireAuth = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECERT);// .verify return the payload you signed before
-    req.user = decoded;
+    req.user = decoded; // here I assigned the user in the request
     next();
   } catch (err) {
     return res.status(401).json({

@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema(
       type: String, 
       required:true,
       trim:true,
-      match: [/^[A-Za-z\s.\-']+$/, 'Full name must contain only letters'],
+      match: [/^[A-Za-z\u0600-\u06FF\s.\-']+$/, 'Full name must contain only letters'],
 
     },
     employeeId: {

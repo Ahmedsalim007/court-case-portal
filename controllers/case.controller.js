@@ -1,12 +1,6 @@
 import { Case } from '../models/case.js';
 import { generateCaseNum } from '../utils/generateCaseNum.js';
-
-const validTransitions = {
-  Registered: ['In Hearing'],
-  'In Hearing': ['Judgment'],
-  Judgment: ['Closed'],
-  Closed: [],
-};
+import { validTransitions } from '../utils/validTransitions.js';
 
 export const getAllCases = async (req, res, next) => {
   try {
@@ -39,6 +33,23 @@ export const getAllCases = async (req, res, next) => {
 export const createCase = async (req, res, next) => {
   const { caseParties, caseHearingDate, caseAssignedJudge } = req.body;
 
+  if (!caseParties || !caseHearingDate || !caseAssignedJudge) {
+    return res.status(400).json({
+      success: false,
+      message: 'Parties, hearing date, and assigned judge are all required',
+    });
+  }
+  
+  const hasPlaintiff = caseParties.some((p) => p.role === 'Plaintiff');
+  const hasDefendant = caseParties.some((p) => p.role === 'Defendant');
+  if (!hasPlaintiff || !hasDefendant) {
+    return res.status(400).json({
+      success: false,
+      message: 'A case requires at least one Plaintiff and one Defendant',
+    });
+  }
+
+  
   try {
     const caseNum = await generateCaseNum();
 
@@ -174,7 +185,7 @@ export const getCaseStats = async (req, res, next) => {
       },
     ]);
     const counts = { Registered: 0, 'In Hearing': 0, Judgment: 0, Closed: 0 };
-     statusGroups.forEach((s) => {
+    statusGroups.forEach((s) => {
       counts[s._id] = s.count;
     });
 

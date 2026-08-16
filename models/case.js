@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { validTransitions } from '../utils/validTransitions.js';
 
 const caseSchema = new mongoose.Schema(
   {
@@ -20,7 +21,7 @@ const caseSchema = new mongoose.Schema(
             required: true,
             trim: true,
             match: [
-              /^[A-Za-z\s.\-']+$/,
+              /^[A-Za-z\u0600-\u06FF\s.\-']+$/,
               'Party name must contain only letters',
             ],
           },
@@ -35,8 +36,13 @@ const caseSchema = new mongoose.Schema(
         },
       ],
       validate: {
-        validator: (arr) => arr.length > 0,
-        message: 'At least one Party is required',
+        validator: (arr) => {
+          if (arr.length === 0) return false;
+          const hasPlaintiff = arr.some((p) => p.role === 'Plaintiff');
+          const hasDefendant = arr.some((p) => p.role === 'Defendant');
+          return hasPlaintiff && hasDefendant;
+        },
+        message: 'A case requires at least one Plaintiff and one Defendant',
       },
     },
     hearingDate: {
@@ -51,7 +57,7 @@ const caseSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
-      match: [/^[A-Za-z\s.\-']+$/, 'Judge name must contain only letters'],
+      match: [/^[A-Za-z\u0600-\u06FF\s.\-']+$/, 'Judge name must contain only letters'],
     },
     status: {
       type: String,
@@ -74,5 +80,23 @@ const caseSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+caseSchema.pre('save', async function () {
+  if (this.isNew) return;
+  if (!this.isModified('status')) return;
+
+  const original = await this.constructor.findById(this._id).select('status').lean(); // stat prev value
+
+  if (original && !validTransitions[original.status].includes(this.status)) {
+    const err = new mongoose.Error.ValidationError(this);
+    err.addError('status', new mongoose.Error.ValidatorError({
+      message: `Cannot move from ${original.status} to ${this.status}`,
+      path: 'status',
+      value: this.status,
+    }));
+    err.context = `Cannot move from ${original.status} to ${this.status}`; // for the err middle we built
+    throw err; // throw instead of next(err)
+  }
+});
 
 export const Case = mongoose.model('Case', caseSchema);
