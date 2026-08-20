@@ -48,10 +48,27 @@ const caseSchema = new mongoose.Schema(
     hearingDate: {
       type: Date,
       required: true,
-      validate: {
-        validator: (date) => date < new Date('2100-01-01'),
-        message: 'Hearing date is unrealistically far in the future',
-      },
+      validate: [
+        {
+          validator: (date) => date < new Date('2100-01-01'),
+          message: 'Hearing date is unrealistically far in the future',
+        },
+        {
+          validator: function (date) {
+            if (!this.isNew && !this.isModified('hearingDate')) return true;
+            return date >= new Date(new Date().toDateString());
+          },
+          message: 'Hearing date cannot be in the past',
+        },
+        {
+          validator: function () {
+            if (this.isNew) return true;
+            if (!this.isModified('hearingDate')) return true;
+            return this.status === 'Registered';
+          },
+          message: 'Hearing date cannot be changed once the case has moved past Registered',
+        },
+      ],
     },
     assignedJudge: {
       type: String,
@@ -84,18 +101,22 @@ const caseSchema = new mongoose.Schema(
 caseSchema.pre('save', async function () {
   if (this.isNew) return;
   if (!this.isModified('status')) return;
-
-  const original = await this.constructor.findById(this._id).select('status').lean(); // stat prev value
-
-  if (original && !validTransitions[original.status].includes(this.status)) {
+ 
+  let original = this.$locals.previousStatus;
+  if (original === undefined) {
+    const doc = await this.constructor.findById(this._id).select('status').lean();
+    original = doc?.status;
+  }
+ 
+  if (original && !validTransitions[original].includes(this.status)) {
     const err = new mongoose.Error.ValidationError(this);
     err.addError('status', new mongoose.Error.ValidatorError({
-      message: `Cannot move from ${original.status} to ${this.status}`,
+      message: `Cannot move from ${original} to ${this.status}`,
       path: 'status',
       value: this.status,
     }));
-    err.context = `Cannot move from ${original.status} to ${this.status}`; // for the err middle we built
-    throw err; // throw instead of next(err)
+    err.context = `Cannot move from ${original} to ${this.status}`;
+    throw err; // modern Kareem: fail a hook by throwing, not next(err)
   }
 });
 

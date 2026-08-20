@@ -1,6 +1,11 @@
 import { Case } from '../models/case.js';
 import { generateCaseNum } from '../utils/generateCaseNum.js';
 import { validTransitions } from '../utils/validTransitions.js';
+import {
+  validateParties,
+  validateHearingDateNotPast,
+  validateHearingDateEditable,
+} from '../utils/caseValidators.js';
 
 export const getAllCases = async (req, res, next) => {
   try {
@@ -8,12 +13,15 @@ export const getAllCases = async (req, res, next) => {
     const filter = req.filter;
 
     const cases = await Case.find(filter)
+      .sort({ createdAt: -1, _id: -1 })
       .populate('createdBy', 'fullName employeeId')
       .populate('updatedBy', 'fullName employeeId')
       .skip(skip)
       .limit(limitNum);
+      
     const total = await Case.countDocuments(filter);
     const totalPages = Math.ceil(total / limitNum);
+
     return res.status(200).json({
       success: true,
       count: cases.length,
@@ -30,6 +38,7 @@ export const getAllCases = async (req, res, next) => {
   }
 };
 
+
 export const createCase = async (req, res, next) => {
   const { caseParties, caseHearingDate, caseAssignedJudge } = req.body;
 
@@ -39,17 +48,17 @@ export const createCase = async (req, res, next) => {
       message: 'Parties, hearing date, and assigned judge are all required',
     });
   }
-  
-  const hasPlaintiff = caseParties.some((p) => p.role === 'Plaintiff');
-  const hasDefendant = caseParties.some((p) => p.role === 'Defendant');
-  if (!hasPlaintiff || !hasDefendant) {
-    return res.status(400).json({
-      success: false,
-      message: 'A case requires at least one Plaintiff and one Defendant',
-    });
+
+  const partiesError = validateParties(caseParties);
+  if (partiesError) {
+    return res.status(400).json({ success: false, message: partiesError });
   }
 
-  
+  const dateError = validateHearingDateNotPast(caseHearingDate);
+  if (dateError) {
+    return res.status(400).json({ success: false, message: dateError });
+  }
+
   try {
     const caseNum = await generateCaseNum();
 
@@ -61,6 +70,7 @@ export const createCase = async (req, res, next) => {
       createdBy: req.user.id,
       updatedBy: req.user.id,
     });
+
     await newCase.save();
     return res.status(201).json({
       success: true,
@@ -68,10 +78,11 @@ export const createCase = async (req, res, next) => {
       message: 'Case Created Successfully',
     });
   } catch (err) {
-    err.context = 'Case Creation falied';
+    err.context = 'Case Creation Failed';
     next(err);
   }
 };
+
 
 export const getCaseByCaseNum = async (req, res, next) => {
   const { caseNum } = req.params;
@@ -110,7 +121,7 @@ export const UpdateCase = async (req, res, next) => {
       });
     }
     if (
-      status === undefined &&
+      !status &&
       caseParties === undefined &&
       caseHearingDate === undefined &&
       caseAssignedJudge === undefined
@@ -120,7 +131,7 @@ export const UpdateCase = async (req, res, next) => {
         message: 'No fields provided to update',
       });
     }
-
+       const originalStatus = targetCase.status // this is the a copy for the data check before it get mutated
     if (status && status !== targetCase.status) {
       const validStatuses = Case.schema.path('status').enumValues;
       if (!validStatuses.includes(status)) {
@@ -136,15 +147,37 @@ export const UpdateCase = async (req, res, next) => {
         });
       }
 
+      targetCase.$locals.previousStatus = targetCase.status;
       targetCase.status = status;
     }
-    if (caseParties !== undefined) targetCase.parties = caseParties;
-    if (caseHearingDate !== undefined) targetCase.hearingDate = caseHearingDate;
+
+    if (caseParties !== undefined) {
+      const partiesError = validateParties(caseParties);
+      if (partiesError) {
+        return res.status(400).json({ success: false, message: partiesError });
+      }
+      targetCase.parties = caseParties;
+    }
+
+    if (caseHearingDate !== undefined) {
+      const editableError = validateHearingDateEditable(originalStatus);
+      if (editableError) {
+        return res.status(400).json({ success: false, message: editableError });
+      }
+      const dateError = validateHearingDateNotPast(caseHearingDate);
+      if (dateError) {
+        return res.status(400).json({ success: false, message: dateError });
+      }
+      targetCase.hearingDate = caseHearingDate;
+    }
+
     if (caseAssignedJudge !== undefined)
       targetCase.assignedJudge = caseAssignedJudge;
 
     targetCase.updatedBy = req.user.id;
+
     await targetCase.save();
+
     return res.status(200).json({
       success: true,
       data: targetCase,

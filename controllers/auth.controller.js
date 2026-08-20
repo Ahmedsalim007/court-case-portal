@@ -42,7 +42,7 @@ export const register = async (req, res, next) => {
       message: 'User registered successfully',
     });
   } catch (err) {
-    err.context = 'Registration Faild';
+    err.context = 'Registration Failed';
     next(err);
   }
 };
@@ -92,7 +92,7 @@ export const login = async (req, res, next) => {
       message: 'Login successful',
     });
   } catch (err) {
-    err.context = 'Login Falied';
+    err.context = 'Login Failed';
     next(err);
   }
 };

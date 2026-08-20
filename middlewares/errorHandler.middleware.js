@@ -1,5 +1,5 @@
 export const errorHandler = (err, req, res, next) => {
-  const { context = 'Operation failed' } = err;
+  const { context = 'Oper`ation failed' } = err;
   
 
 
@@ -13,7 +13,7 @@ export const errorHandler = (err, req, res, next) => {
    if (err.name === 'CastError') {
     return res.status(400).json({
       success: false,
-      message: 'Invalid ID format',
+      message: `Invalid value for field: ${err.path}`,
       error: err.message,
     });
   }
