@@ -2,50 +2,7 @@ import { User } from '../models/user.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 
-export const register = async (req, res, next) => {
-  const { employeeId, password, fullName } = req.body;
 
-  if (!employeeId || !password || !fullName) {
-    return res.status(400).json({
-      success: false,
-      message: 'Employee ID, password and FullName are required',
-    });
-  }
-
-    if (typeof employeeId !== 'string' || typeof password !== 'string') {
-      return res.status(400).json({
-        success: false,
-        message: 'Invalid request',
-      });
-    }
-  
-  try {
-    const existingUser = await User.findOne({ employeeId });
-
-    if (existingUser) {
-      return res.status(409).send({
-        success: false,
-        message: 'Id is already taken',
-      });
-    }
-    const newUser = new User({ employeeId, password, fullName });
-    await newUser.save();
-
-    const token = jwt.sign(
-      { id: newUser._id, fullName: newUser.fullName, employeeId: newUser.employeeId, role: newUser.role }, // paylood (never put password)
-      process.env.JWT_SECERT,
-      { expiresIn: '1d' }
-    );
-    return res.status(201).json({
-      success: true,
-      token,
-      message: 'User registered successfully',
-    });
-  } catch (err) {
-    err.context = 'Registration Failed';
-    next(err);
-  }
-};
 
 export const login = async (req, res, next) => {
   const { employeeId, password } = req.body;
@@ -90,6 +47,7 @@ export const login = async (req, res, next) => {
       success: true,
       token,
       message: 'Login successful',
+
     });
   } catch (err) {
     err.context = 'Login Failed';

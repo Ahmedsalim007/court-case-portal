@@ -1,5 +1,5 @@
 export const errorHandler = (err, req, res, next) => {
-  const { context = 'Oper`ation failed' } = err;
+  const { context = 'Operation failed' } = err;
   
 
 

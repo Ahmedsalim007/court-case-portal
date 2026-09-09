@@ -8,10 +8,12 @@ import express from 'express';
 
 const router = express.Router();
 
-router.post('/createCase',requireAuth, createCase);
-router.get('/getCases',requireAuth, filterCases, paginate, getAllCases);
-router.get('/getCase/:caseNum',requireAuth, getCaseByCaseNum);
-router.put('/updateCase/:caseNum',requireAuth, UpdateCase)
-router.delete('/deleteCase/:caseNum', requireAuth ,deleteCase)
-router.get('/stats', requireAuth, getCaseStats)
+router.use(requireAuth)
+
+router.post('/createCase', createCase);
+router.get('/getCases', filterCases, paginate, getAllCases);
+router.get('/getCase/:caseNum', getCaseByCaseNum);
+router.put('/updateCase/:caseNum', UpdateCase)
+router.delete('/deleteCase/:caseNum' ,deleteCase)
+router.get('/stats',  getCaseStats)
 export default router;
