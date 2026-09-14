@@ -1,0 +1,140 @@
+{
+  "app": { "title": "بوابة القضايا" },
+
+"nav": {
+  "cases": "القضايا",
+  "manageUsers": "إدارة المستخدمين",
+  "logout": "تسجيل خروج"
+},
+  "login": {
+    "title": "مرحباً بعودتك",
+    "subtitle": "سجّل الدخول للوصول إلى بوابة القضايا",
+    "employeeId": "الرقم الوظيفي",
+    "employeeIdPlaceholder": "أدخل رقمك الوظيفي",
+    "password": "كلمة المرور",
+    "passwordPlaceholder": "أدخل كلمة المرور",
+    "submit": "تسجيل الدخول",
+    "submitting": "جاري تسجيل الدخول...",
+    "sessionExpired": "انتهت جلستك. الرجاء تسجيل الدخول مرة أخرى.",
+    "noAccount": "ليس لديك حساب؟",
+    "registerLink": "إنشاء حساب",
+    "requiredError": "الرقم الوظيفي وكلمة المرور مطلوبان"
+  },
+  "register": {
+    "title": "إنشاء حساب",
+    "fullName": "الاسم الكامل",
+    "fullNamePlaceholder": "أدخل اسمك الكامل",
+    "employeeId": "الرقم الوظيفي",
+    "employeeIdPlaceholder": "أدخل رقمك الوظيفي",
+    "password": "كلمة المرور",
+    "passwordPlaceholder": "6 أحرف على الأقل",
+    "confirmPassword": "تأكيد كلمة المرور",
+    "confirmPasswordPlaceholder": "أعد إدخال كلمة المرور",
+    "submit": "إنشاء الحساب",
+    "submitting": "جاري إنشاء الحساب...",
+    "haveAccount": "لديك حساب بالفعل؟",
+    "loginLink": "تسجيل الدخول",
+    "requiredError": "جميع الحقول مطلوبة",
+    "nameError": "يجب أن يحتوي الاسم الكامل على أحرف فقط",
+    "idError": "يجب أن يتكون الرقم الوظيفي من 1 إلى 6 أرقام",
+    "passwordLengthError": "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل",
+    "passwordMatchError": "كلمتا المرور غير متطابقتين"
+  },
+  "cases": {
+    "title": "القضايا",
+    "newCase": "قضية جديدة",
+    "searchPlaceholder": "البحث برقم القضية...",
+    "loading": "جاري تحميل القضايا...",
+    "noCasesFound": "لم يتم العثور على قضايا.",
+    "tryAdjusting": "حاول تعديل البحث أو عوامل التصفية.",
+    "previous": "السابق",
+    "next": "التالي",
+    "pageOf": "صفحة {{page}} من {{totalPages}}"
+  },
+  "filters": {
+    "button": "عوامل التصفية",
+    "status": "الحالة",
+    "allStatuses": "جميع الحالات",
+    "judge": "القاضي",
+    "judgePlaceholder": "البحث باسم القاضي...",
+    "fromDate": "تاريخ الجلسة من",
+    "toDate": "تاريخ الجلسة إلى",
+    "clearAll": "مسح جميع عوامل التصفية"
+  },
+  "stats": {
+    "overview": "نظرة عامة",
+    "byStatus": "القضايا حسب الحالة",
+    "loading": "جاري تحميل الإحصائيات...",
+    "total": "إجمالي القضايا"
+  },
+  "status": {
+    "Registered": "مسجّلة",
+    "In Hearing": "قيد الجلسة",
+    "Judgment": "صدور الحكم",
+    "Closed": "مغلقة"
+  },
+
+"roleLabel": "الدور",
+  "role": {
+    "Plaintiff": "مدّعٍ",
+    "Defendant": "مدّعى عليه",
+    "Witness": "شاهد"
+  },
+  "caseCard": {
+    "judge": "القاضي:",
+    "hearing": "الجلسة:",
+    "vs": "ضد"
+  },
+  "caseDetail": {
+    "backToCases": "← العودة إلى القضايا",
+    "loading": "جاري تحميل القضية...",
+    "caseInformation": "معلومات القضية",
+    "parties": "الأطراف",
+    "assignedJudge": "القاضي المعين",
+    "hearingDate": "تاريخ الجلسة",
+    "moveTo": "نقل إلى {{status}}",
+    "updating": "جاري التحديث...",
+    "editCase": "تعديل القضية",
+    "deleteCase": "حذف القضية",
+    "deleting": "جاري الحذف...",
+    "createdBy": "أُنشئت بواسطة {{name}}",
+    "updatedBy": "آخر تحديث بواسطة {{name}}",
+    "unknown": "غير معروف",
+    "statusChangeConfirm": "تغيير الحالة إلى \"{{status}}\"؟",
+    "deleteConfirm": "حذف القضية {{caseNum}}؟ لا يمكن التراجع عن هذا."
+  },
+  "caseForm": {
+    "newCaseTitle": "قضية جديدة",
+    "editCaseTitle": "تعديل القضية",
+    "caseNumber": "رقم القضية:",
+    "editingBadge": "تعديل",
+    "assignedJudge": "القاضي المعين",
+    "assignedJudgePlaceholder": "القاضي...",
+    "hearingDate": "تاريخ الجلسة",
+    "parties": "الأطراف",
+    "partyCount_zero": "لا أطراف",
+    "partyCount_one": "طرف واحد",
+    "partyCount_two": "طرفان",
+    "partyCount_few": "{{count}} أطراف",
+    "partyCount_many": "{{count}} طرفًا",
+    "partyCount_other": "{{count}} طرف",
+    "addParty": " إضافة طرف آخر",
+    "fullNamePlaceholder": "الاسم الكامل",
+    "remove": "إزالة",
+    "cancel": "إلغاء",
+    "createSubmit": "إنشاء القضية",
+    "creating": "جاري الإنشاء...",
+    "saveSubmit": "حفظ التغييرات",
+    "saving": "جاري الحفظ...",
+    "loadingCase": "جاري تحميل تفاصيل القضية...",
+    "backToCase": "← العودة إلى القضية",
+    "partyLabel": "الطرف رقم {{num}}",
+    "partyNameRequired": "كل طرف يحتاج إلى اسم، ويجب إضافة طرف واحد على الأقل",
+    "partyNameLetters": "يجب أن تحتوي أسماء الأطراف على أحرف فقط",
+    "hearingDateRequired": "تاريخ الجلسة مطلوب",
+    "judgeRequired": "القاضي المعين مطلوب",
+    "judgeLetters": "يجب أن يحتوي اسم القاضي على أحرف فقط",
+    "plaintiffDefendantRequired": "يجب أن تحتوي القضية على مدّعٍ واحد ومدّعى عليه واحد على الأقل",
+   "hearingDateLocked": "لا يمكن تغيير تاريخ الجلسة إلا أثناء تسجيل القضية"
+  }
+}

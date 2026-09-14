@@ -1,0 +1,136 @@
+{
+  "app": { "title": "Court Case Portal" },
+  "nav": {
+    "logout": "Logout",
+    "cases": "Cases",
+    "manageUsers": "Manage Users"
+   
+  },
+  "login": {
+    "title": "Welcome Back",
+    "subtitle": "Log in to access the Court Case Portal",
+    "employeeId": "Employee ID",
+    "employeeIdPlaceholder": "Enter your Id",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "submit": "Log In",
+    "submitting": "Logging in...",
+    "sessionExpired": "Your session has ended. Please log in again.",
+    "noAccount": "No account yet?",
+    "registerLink": "Register",
+    "requiredError": "Employee ID and password are required"
+  },
+  "register": {
+    "title": "Create an Account",
+    "fullName": "Full Name",
+    "fullNamePlaceholder": "Enter your Fullname",
+    "employeeId": "Employee ID",
+    "employeeIdPlaceholder": "Enter your Id",
+    "password": "Password",
+    "passwordPlaceholder": "At least 6 characters",
+    "confirmPassword": "Confirm Password",
+    "confirmPasswordPlaceholder": "Re-enter password",
+    "submit": "Create Account",
+    "submitting": "Creating account...",
+    "haveAccount": "Already have an account?",
+    "loginLink": "Log in",
+    "requiredError": "All fields are required",
+    "nameError": "Full name must contain only letters",
+    "idError": "Employee ID must be 1 to 6 digits",
+    "passwordLengthError": "Password must be at least 6 characters",
+    "passwordMatchError": "Passwords must match"
+  },
+  "cases": {
+    "title": "Cases",
+    "newCase": "New Case",
+    "searchPlaceholder": "Search by case number...",
+    "loading": "Loading cases...",
+    "noCasesFound": "No cases found.",
+    "tryAdjusting": "Try adjusting your search or filters.",
+    "previous": "Previous",
+    "next": "Next",
+    "pageOf": "Page {{page}} of {{totalPages}}"
+  },
+  "filters": {
+    "button": "Filters",
+    "status": "Status",
+    "allStatuses": "All Statuses",
+    "judge": "Judge",
+    "judgePlaceholder": "Search by judge name...",
+    "fromDate": "Hearing Date From",
+    "toDate": "Hearing Date To",
+    "clearAll": "Clear all filters"
+  },
+  "stats": {
+    "overview": "Overview",
+    "byStatus": "Cases by status",
+    "loading": "Loading stats...",
+    "total": "Total Cases"
+  },
+  "status": {
+    "Registered": "Registered",
+    "In Hearing": "In Hearing",
+    "Judgment": "Judgment",
+    "Closed": "Closed"
+  },
+  
+"roleLabel": "Role",
+  "role": {
+    "Plaintiff": "Plaintiff",
+    "Defendant": "Defendant",
+    "Witness": "Witness"
+  },
+  "caseCard": {
+    "judge": "Judge:",
+    "hearing": "Hearing:",
+    "vs": "vs."
+  },
+  "caseDetail": {
+    "backToCases": "← Back to Cases",
+    "loading": "Loading case...",
+    "caseInformation": "Case Information",
+    "parties": "Parties",
+    "assignedJudge": "Assigned Judge",
+    "hearingDate": "Hearing Date",
+    "moveTo": "Move to {{status}}",
+    "updating": "Updating...",
+    "editCase": "Edit Case",
+    "deleteCase": "Delete Case",
+    "deleting": "Deleting...",
+    "createdBy": "Created by {{name}}",
+    "updatedBy": "Last updated by {{name}}",
+    "unknown": "Unknown",
+    "statusChangeConfirm": "Change status to \"{{status}}\"?",
+    "deleteConfirm": "Delete case {{caseNum}}? This cannot be undone."
+  },
+  "caseForm": {
+    "newCaseTitle": "New Case",
+    "editCaseTitle": "Edit Case",
+    "caseNumber": "Case Number:",
+    "editingBadge": "Editing",
+    "assignedJudge": "Assigned Judge",
+    "assignedJudgePlaceholder": "e.g. Judge...",
+    "hearingDate": "Hearing Date",
+    "parties": "Parties",
+    "partyCount": "{{count}} party",
+    "partyCount_other": "{{count}} parties",
+    "addParty": "Add another party",
+    "fullNamePlaceholder": "Full name",
+    "remove": "Remove",
+    "cancel": "Cancel",
+    "createSubmit": "Create Case",
+    "creating": "Creating...",
+    "saveSubmit": "Save Changes",
+    "saving": "Saving...",
+    "loadingCase": "Loading case details...",
+    "backToCase": "← Back to Case",
+    "partyLabel": "Party #{{num}}",
+    "partyNameRequired": "Every party needs a name, and at least one party is required",
+    "partyNameLetters": "Party names must contain only letters",
+    "hearingDateRequired": "Hearing date is required",
+    "judgeRequired": "Assigned judge is required",
+    "judgeLetters": "Judge name must contain only letters",
+    "hearingDateLocked": "Hearing date can only be changed while the case is Registered",
+    "plaintiffDefendantRequired": "A case requires at least one Plaintiff and one Defendant"
+  }
+}
