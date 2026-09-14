@@ -105,12 +105,7 @@ function LoginPage() {
           </form>
         </div>
 
-        <p className="text-sm text-gray-500 text-center mt-6">
-          {t('login.noAccount')}{' '}
-          <Link to="/register" className="text-blue-600 font-medium hover:text-blue-800">
-            {t('login.registerLink')}
-          </Link>
-        </p>
+      
       </div>
     </div>
   );
