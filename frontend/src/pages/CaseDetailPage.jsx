@@ -111,12 +111,12 @@ function CaseDetailPage() {
 
         <StatusTracker status={caseData.status} />
 
-        <div className="grid grid-cols-2 gap-6 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
           <div className="bg-white border border-gray-200 rounded-xl p-6">
             <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-4">
               {t('caseDetail.caseInformation')}
             </p>
-            <div className="grid grid-cols-2 gap-5">
+            <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 gap-5">
               <div>
                 <p className="text-xs text-gray-400 font-medium">{t('caseDetail.assignedJudge')}</p>
                 <p className="text-sm text-gray-900 mt-1 font-medium">{caseData.assignedJudge}</p>
@@ -180,14 +180,14 @@ function CaseDetailPage() {
             <button
               onClick={handleDelete}
               disabled={deleting}
-              className="px-4 py-2 text-sm font-medium text-red-600 border border-red-200 rounded-lg hover:bg-red-50 disabled:opacity-50 transition ml-auto"
+              className="px-4 py-2 text-sm font-medium text-red-600 border border-red-200 rounded-lg hover:bg-red-50 disabled:opacity-50 transition ms-auto"
             >
               {deleting ? t('caseDetail.deleting') : t('caseDetail.deleteCase')}
             </button>
           </div>
         </div>
 
-        <div className="flex justify-between px-1 text-xs text-gray-400">
+        <div className="flex flex-wrap justify-between gap-2 px-1 text-xs text-gray-400">
           <span className="font-medium">
             {t('caseDetail.createdBy', { name: caseData.createdBy?.fullName || t('caseDetail.unknown') })}
           </span>

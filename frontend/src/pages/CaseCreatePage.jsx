@@ -59,7 +59,7 @@ function CaseCreatePage() {
         </div>
 
         <form onSubmit={handleSubmit}>
-          <div className="px-8 py-6 grid grid-cols-2 gap-x-10 gap-y-5">
+          <div className="px-8 py-6 grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-5">
             <div>
               <p className="text-xs text-gray-400 uppercase mb-1">
                 {t('caseForm.assignedJudge')}

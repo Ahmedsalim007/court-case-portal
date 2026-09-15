@@ -68,7 +68,8 @@ function AdminUserListPage() {
               <p className="text-sm">{t('users.noUsersFound')}</p>
             </div>
           ) : (
-            <table className="w-full text-left">
+            <div className="overflow-x-auto">
+            <table className="w-full text-left min-w-[520px]">
               <thead>
                 <tr className="border-b border-gray-200 bg-gray-50/50">
                   <th className="py-3 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wide">
@@ -104,6 +105,7 @@ function AdminUserListPage() {
                 ))}
               </tbody>
             </table>
+            </div>
           )}
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, replace } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
 import CaseListPage from './pages/CaseListPage';
 import Navbar from './components/Navbar';
@@ -8,8 +8,9 @@ import CaseCreatePage from './pages/CaseCreatePage';
 import CaseUpdatePage from './pages/CaseUpdatePage';
 import AdminUserCreatePage from './pages/AdminUserCreatePage';
 import AdminUserListPage from './pages/AdminUserListPage';
-
+import { useAuth } from './context/AuthContext';
 function App() {
+  const { isAuthenticated } = useAuth();
   return (
     <BrowserRouter>
       <div className="min-h-screen bg-gray-50">
@@ -25,7 +26,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="/" element={<Navigate to="/login" />} />
+          <Route path="/" element={<Navigate to={ isAuthenticated ? '/cases': 'login'} replace/>} />
           <Route
             path="/cases/:caseNum"
             element={

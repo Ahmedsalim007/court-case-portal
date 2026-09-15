@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { HiOutlineFunnel } from 'react-icons/hi2';
 import { STATUS_ORDER } from '../constants/caseConstants';
 
 const emptyFilters = { status: '', judge: '', fromDate: '', toDate: '' };
@@ -38,22 +39,27 @@ function CaseFilters({ initialFilters, onFilterChange }) {
     filters.status || filters.judge || filters.fromDate || filters.toDate;
 
   return (
-    <div className="relative self-start" ref={panelRef}>
+    <div className="relative shrink-0" ref={panelRef}>
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className={`px-4 py-3 text-sm border rounded-lg font-medium transition ${
+        title={t('filters.button')}
+        aria-label={t('filters.button')}
+        className={`relative flex items-center justify-center px-3 py-2.5 border rounded-lg transition ${
           hasActiveFilters
             ? 'border-blue-500 text-blue-600 bg-blue-50'
             : 'border-gray-300 text-gray-700 hover:bg-gray-50'
         }`}
       >
-        {t('filters.button')} {hasActiveFilters && '•'}
+        <HiOutlineFunnel className="h-4 w-4" />
+        {hasActiveFilters && (
+          <span className="absolute -top-1 -end-1 h-2 w-2 rounded-full bg-blue-600" />
+        )}
       </button>
 
       {open && (
-        <div className="absolute right-0 mt-2 w-[min(18rem,calc(100vw-3rem))] bg-white border border-gray-200 rounded-xl shadow-lg p-5 z-10">
-          <div className="flex flex-col gap-4">
+        <div className="absolute end-0 mt-2 w-[min(16rem,calc(100vw-3rem))] bg-white border border-gray-200 rounded-xl shadow-lg p-4 z-10">
+          <div className="flex flex-col gap-3">
             <div>
               <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">
                 {t('filters.status')}

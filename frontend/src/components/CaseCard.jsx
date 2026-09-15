@@ -26,7 +26,7 @@ function CaseCard({ caseItem }) {
         {plaintiffNames} <span className="text-gray-400 font-normal text-md mx-.5">{t('caseCard.vs')}</span> {defendantNames}
       </h3>
 
-      <div className="flex items-center gap-10 text-sm text-gray-500">
+      <div className="flex flex-wrap items-center gap-x-6 gap-y-1 text-sm text-gray-500">
         <span className="flex items-center gap-1">
           <span className="text-gray-400">{t('caseCard.judge')}</span> {caseItem.assignedJudge}
         </span>

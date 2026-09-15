@@ -79,14 +79,14 @@ function CaseListPage() {
             </h1>
             <Link
               to="/cases/new"
-              className="inline-flex items-center gap-2 bg-blue-600 text-white px-5 py-2.5 rounded-lg hover:bg-blue-700 transition-colors font-medium text-sm whitespace-nowrap"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-blue-600 text-white px-5 py-2.5 rounded-lg hover:bg-blue-700 transition-colors font-medium text-sm whitespace-nowrap"
             >
               <span className="text-lg leading-none">+</span>
               {t('cases.newCase')}
             </Link>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-3 mb-5">
+          <div className="flex flex-row gap-3 mb-5">
             <div className="flex-1">
               <input
                 type="text"
@@ -130,7 +130,7 @@ function CaseListPage() {
                 ))}
               </div>
               <div className="lg:hidden mt-8">
-              <CaseStatsPanel />
+              <CaseStatsPanel collapsible />
             </div>
 
               <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-8 pt-4 border-t border-gray-200">

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { STATUS_ORDER as statusOrder } from '../constants/caseConstants';
 import { statsApi } from '../api/caseStatsApi';
+import { HiOutlineChevronDown } from 'react-icons/hi2';
 
 const statusStyles = {
   Registered: { dot: 'bg-blue-500', text: 'text-gray-700' },
@@ -10,8 +11,9 @@ const statusStyles = {
   Closed: { dot: 'bg-green-500', text: 'text-gray-700' },
 };
 
-function CaseStatsPanel() {
+function CaseStatsPanel({ collapsible = false }) {
   const { t } = useTranslation();
+  const [collapsed, setCollapsed] = useState(collapsible);
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -34,16 +36,30 @@ function CaseStatsPanel() {
   }, []);
 
   return (
-    <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden  sticky top-6">
-      <div className="px-5 py-4 border-b border-gray-200 bg-gray-50/50">
-        <h3 className="text-sm font-semibold text-gray-900 tracking-tight">
-          {t('stats.overview')}
-        </h3>
-        <p className="text-xs font-medium text-gray-400 mt-0.5">
-          {t('stats.byStatus')}
-        </p>
-      </div>
+    <div className={`bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden ${!collapsible ? 'sticky top-6' : ''}`}>
+      <button
+        type="button"
+        onClick={() => collapsible && setCollapsed((c) => !c)}
+        className={`w-full flex items-center justify-between px-5 py-4 border-b border-gray-200 bg-gray-50/50 text-left ${
+          collapsible ? 'cursor-pointer' : 'cursor-default'
+        }`}
+      >
+        <div>
+          <h3 className="text-sm font-semibold text-gray-900 tracking-tight">
+            {t('stats.overview')}
+          </h3>
+          <p className="text-xs font-medium text-gray-400 mt-0.5">
+            {t('stats.byStatus')}
+          </p>
+        </div>
+        {collapsible && (
+          <HiOutlineChevronDown
+            className={`h-4 w-4 text-gray-400 transition-transform ${collapsed ? '' : 'rotate-180'}`}
+          />
+        )}
+      </button>
 
+      {!collapsed && (
       <div className="p-5">
         {loading && (
           <div className="flex items-center justify-center py-8">
@@ -135,6 +151,7 @@ function CaseStatsPanel() {
           </>
         )}
       </div>
+      )}
     </div>
   );
 }
