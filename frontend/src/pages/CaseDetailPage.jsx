@@ -158,13 +158,13 @@ function CaseDetailPage() {
         )}
 
         <div className="bg-white border border-gray-200 rounded-xl p-6 mb-6">
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-col sm:flex-row flex-wrap gap-3">
             {nextStatuses.map((status) => (
               <button
                 key={status}
                 onClick={() => handleStatusChange(status)}
                 disabled={updating}
-                className="px-4 py-2 text-sm font-semibold bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 transition"
+                className="w-full sm:w-auto justify-center px-4 py-2 text-sm font-semibold bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 transition flex items-center"
               >
                 {updating ? t('caseDetail.updating') : t('caseDetail.moveTo', { status: t(`status.${status}`, status) })}
               </button>
@@ -172,7 +172,7 @@ function CaseDetailPage() {
 
             <Link
               to={`/cases/${caseNum}/edit`}
-              className="px-4 py-2 text-sm font-medium border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition"
+              className="w-full sm:w-auto justify-center px-4 py-2 text-sm font-medium border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition flex items-center"
             >
               {t('caseDetail.editCase')}
             </Link>
@@ -180,7 +180,7 @@ function CaseDetailPage() {
             <button
               onClick={handleDelete}
               disabled={deleting}
-              className="px-4 py-2 text-sm font-medium text-red-600 border border-red-200 rounded-lg hover:bg-red-50 disabled:opacity-50 transition ms-auto"
+              className="w-full sm:w-auto justify-center sm:ms-auto px-4 py-2 text-sm font-medium text-red-600 border border-red-200 rounded-lg hover:bg-red-50 disabled:opacity-50 transition flex items-center"
             >
               {deleting ? t('caseDetail.deleting') : t('caseDetail.deleteCase')}
             </button>

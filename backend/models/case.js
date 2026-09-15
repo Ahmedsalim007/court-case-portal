@@ -120,4 +120,8 @@ caseSchema.pre('save', async function () {
   }
 });
 
+caseSchema.index({ status: 1, createdAt: -1 });
+caseSchema.index({ hearingDate: 1 });
+caseSchema.index({ createdAt: -1 });
+
 export const Case = mongoose.model('Case', caseSchema);

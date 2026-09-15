@@ -66,15 +66,42 @@ export const getUser = async (req, res, next) => {
   }
 };
 
+const PROTECTED_DEMO_IDS = ['100001', '100002'];
+
 export const deleteUser = async (req, res, next) => {
   try {
-    const deleted = await User.findOneAndDelete({
-      employeeId: req.params.employeeId,
-    });
-    if (!deleted)
-      return res
-        .status(404)
-        .json({ success: false, message: 'User not found' });
+    const { employeeId } = req.params;
+
+    if (PROTECTED_DEMO_IDS.includes(employeeId)) {
+      return res.status(403).json({
+        success: false,
+        message: 'This is a demo account and cannot be deleted',
+      });
+    }
+
+    if (employeeId === req.user.employeeId) {
+      return res.status(403).json({
+        success: false,
+        message: 'You cannot delete your own account',
+      });
+    }
+
+    const targetUser = await User.findOne({ employeeId });
+    if (!targetUser) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    if (targetUser.role === 'Admin') {
+      const adminCount = await User.countDocuments({ role: 'Admin' });
+      if (adminCount <= 1) {
+        return res.status(403).json({
+          success: false,
+          message: 'Cannot delete the last remaining admin',
+        });
+      }
+    }
+
+    await User.findOneAndDelete({ employeeId });
     res.status(200).json({ success: true, message: 'User deleted' });
   } catch (err) {
     next(err);
