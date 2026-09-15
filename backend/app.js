@@ -15,6 +15,9 @@ app.use(
 );
 
 app.use(express.json());
+
+app.get('/', (req, res) => res.send('CCP API is running'));
+
 app.use('/api/CasePortal', caseApi);
 app.use(errorHandler);
 
