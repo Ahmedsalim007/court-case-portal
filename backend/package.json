@@ -5,8 +5,9 @@
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon server.js",
-    "start": "node server.js",
+    "dev": "tsx watch server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
     "test": "vitest run",
     "test:watch": "vitest"
   },
@@ -23,10 +24,16 @@
     "mongoose": "^9.8.1"
   },
   "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^26.6.6",
     "axios": "^1.19.0",
     "mongodb-memory-server": "^11.3.0",
     "nodemon": "^3.1.14",
     "supertest": "^7.3.0",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
     "vitest": "^5.0.1"
   }
 }

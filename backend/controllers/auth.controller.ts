@@ -1,10 +1,17 @@
 import { User } from '../models/user.js';
+import type { Request, Response, NextFunction } from 'express';
+import type { ErrorWithContext } from '../types/Error.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 
 
 
-export const login = async (req, res, next) => {
+
+export const login = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { employeeId, password } = req.body;
 
   if (!employeeId || !password) {
@@ -36,10 +43,18 @@ export const login = async (req, res, next) => {
         message: 'Incorrect employee ID or password',
       });
     }
-
+    const secret = process.env.JWT_SECERT;
+    if (!secret) {
+      throw new Error('JWT_SECRET is not defined');
+    }
     const token = jwt.sign(
-      { id: user._id,fullName: user.fullName, employeeId: user.employeeId, role: user.role },
-      process.env.JWT_SECERT,
+      {
+        id: user._id,
+        fullName: user.fullName,
+        employeeId: user.employeeId,
+        role: user.role,
+      },
+      secret,
       { expiresIn: '1d' }
     );
 
@@ -47,10 +62,11 @@ export const login = async (req, res, next) => {
       success: true,
       token,
       message: 'Login successful',
-
     });
   } catch (err) {
-    err.context = 'Login Failed';
-    next(err);
+     const error: ErrorWithContext = err instanceof Error? err : new Error(String(err)); 
+  
+    error.context = "Login Failed";
+    next(error);
   }
 };

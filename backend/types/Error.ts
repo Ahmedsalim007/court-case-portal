@@ -1,0 +1,1 @@
+export type ErrorWithContext = Error & { context?: string };

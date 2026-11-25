@@ -12,6 +12,7 @@ try {
     console.log(` API: http://localhost:${PORT}/api/CasePortal'`);
   });
 } catch (err) {
-  console.error('Failed to connect to the dataBase', err.message);
+  const message = err instanceof Error ? err.message : String(err);
+  console.error('Failed to connect to the dataBase', message);
   process.exit(1);
 }
