@@ -1,6 +1,6 @@
 import { Counter } from '../models/counter.js';
 
-export const generateCaseNum = async () => {
+export const generateCaseNum = async (): Promise<string> => {
   const year = new Date().getFullYear();
 
   const counter = await Counter.findOneAndUpdate(

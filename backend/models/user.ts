@@ -1,7 +1,16 @@
-import mongoose from 'mongoose';
+import mongoose, {Schema} from 'mongoose';
 import bcrypt from 'bcryptjs';
+import type { UserRole } from '../types/user.js';
 
-const userSchema = new mongoose.Schema(
+export interface IUser {
+  fullName: string;
+  employeeId: string;
+  password: string;
+  role: UserRole;
+  createdAt: Date;
+  updatedAt: Date;
+}
+const userSchema = new Schema <IUser>(
 
   {
     fullName:{
@@ -41,4 +50,4 @@ userSchema.pre('save', async function () {
   this.password = await bcrypt.hash(this.password, 10);
 });
 
-export const User = mongoose.model('User', userSchema);
+export const User = mongoose.model<IUser>('User', userSchema);
